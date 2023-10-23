@@ -98,7 +98,7 @@ int main()
   ```
 
 
-## 三 、指针的使用 ##   
+## 三 、指针的应用 ##   
 对指针有了初步的认识，我们开始了解指针在实际操作中的使用;   
 
 ### 1.指针与数组 ***   
@@ -225,10 +225,270 @@ int main()
 		同理，如果要对字符串中的值进行修改，在代码部分添加条件即可。   
 
  ##### 4. 第四种，指针数组* #####
-  在解决实际问题时，我们可能会面临有多个字符串，而不是单个字符串    
-  比如char[5] = {"heello","how","are","you"}    
-  这是，仅仅一个指针就无法完成任务了，为此我们引入了指针数组    
+  在解决实际问题时，我们可能会面临有多个变量，    
+  这时，仅仅一个指针就无法完成任务了，为此我们引入了指针数组    
+  指针数组就是一个数组，里面的每一个元素都指向一个数据。   
   **创建一个指针数组**   
+```c++
+#include <iostream>
+ 
+using namespace std;
+const int MAX = 3;
+ 
+int main ()
+{
+   int  var[MAX] = {10, 100, 200};
+   int *ptr[MAX];    //ptr 为一个指针数组，其中每个元素都是一个int指针
+ 
+   for (int i = 0; i < MAX; i++)
+   {
+      ptr[i] = &var[i]; // 赋值为整数的地址
+   }
+   for (int i = 0; i < MAX; i++)
+   {
+      cout << "Value of var[" << i << "] = ";
+      cout << *ptr[i] << endl;
+   }
+   return 0;
+}
+```
+
+**指针数组存储字符串列表**   
+不知道大家有没有面对过或者想过这种情况：   
+char arr[] = {"heello", "how","are","you"};   
+一个数组中存储多个字符串变量，这应该没问题吧   
+可是经过本人多次尝试，这样的写法在c++中是错误的！   
+但是指针数组却能够解决这一问题  
+```c++
+#include <iostream>
+ 
+using namespace std;
+const int MAX = 4;
+ 
+int main ()
+{
+ const char *names[MAX] = {
+                   "Zara Ali",
+                   "Hina Ali",
+                   "Nuha Ali",
+                   "Sara Ali",
+   };
+ 
+   for (int i = 0; i < MAX; i++)
+   {
+      cout << "Value of names[" << i << "] = ";
+      cout << names[i] << endl;
+   }
+   return 0;
+}
+```
+这样就轻松解决了~    
+
+### 2.指针与函数 ###    
+个人认为，指针在函数传参的时候作用最大，特别是在接触结构和类以前，要想通过外部函数对函数内参数进行操作，就只能通过访问
+地址，也就是通过指针间接操作。
+
+
+#### 1.指针传递参数####   
+
+首先请各位先了解函数的形参和实参，这里我就部普及了。下面我们直接上例子   
+```c++
+#include <iostream>
+#include <ctime>
+ 
+using namespace std;
+ 
+// 在写函数时应习惯性的先声明函数，然后在定义函数
+
+void getSeconds(unsigned long *par);   //注意参数是指针而不是地址！
+ 
+int main ()
+{
+   unsigned long sec;
+   getSeconds( &sec );     //而传入时，传的是地址；
+
+//也可以这样写：
+  unsigned long sec;
+  unsigned long *p = &sec;
+  getSeconds( p );
+ 
+   // 输出实际值
+   cout << "Number of seconds :" << sec << endl;
+ 
+   return 0;
+}
+ 
+void getSeconds(unsigned long *par)
+{
+   // 获取当前的秒数
+   *par = time( NULL );     //对指针操作要加*解引用符
+   return;
+}
+```
+#### 2.引用传参 ####   
+切忌和引用传参弄混，这里我小举一个例子：   
+```c++
+// 引用传递，值传递，地址传递对比
+#include <iostream>
+using namespace std;
+
+//1. 值传递
+void mySwap01(int a, int b) {
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+//2. 地址传递
+void mySwap02(int* a, int* b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+//3. 引用传递
+void mySwap03(int& a, int& b) {
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+int main() {
+
+	int a = 10;
+	int b = 20;
+
+	mySwap01(a, b);
+	cout << "a:" << a << " b:" << b << endl;   //值不交换
+
+	mySwap02(&a, &b);
+	cout << "a:" << a << " b:" << b << endl;   //值交换
+
+	mySwap03(a, b);
+	cout << "a:" << a << " b:" << b << endl;    //值不交换
+
+	system("pause");
+
+	return 0;
+}
+```
+
+
+#### 3.返回一个指针 ####  
+指针可以作为函数的返回值   
+> 另外，C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static变量。
+
+下面是一个生存随机数的例子：
+```c++   
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+ 
+using namespace std;
+ 
+// 要生成和返回随机数的函数
+int * getRandom( )
+{
+  static int  r[10];
+ 
+  // 设置种子
+  srand( (unsigned)time( NULL ) );
+  for (int i = 0; i < 10; ++i)
+  {
+    r[i] = rand();
+    cout << r[i] << endl;
+  }
+ 
+  return r;
+}
+ 
+// 要调用上面定义函数的主函数
+int main ()
+{
+   // 一个指向整数的指针
+   int *p;
+ 
+   p = getRandom();
+   for ( int i = 0; i < 10; i++ )
+   {
+       cout << "*(p + " << i << ") : ";
+       cout << *(p + i) << endl;
+   }
+ 
+   return 0;
+}
+```   
+此处p接受的是一个指向数组的指针，虽然我觉得在一个函数中也能实现，为什么要返回一个指针，但我相信总有用处。   
+
+输出结果：
+```c++
+624723190
+1468735695
+807113585
+976495677
+613357504
+1377296355
+1530315259
+1778906708
+1820354158
+667126415
+*(p + 0) : 624723190
+*(p + 1) : 1468735695
+*(p + 2) : 807113585
+*(p + 3) : 976495677
+*(p + 4) : 613357504
+*(p + 5) : 1377296355
+*(p + 6) : 1530315259
+*(p + 7) : 1778906708
+*(p + 8) : 1820354158
+*(p + 9) : 667126415
+```    
+
+
+## 四、其他指针##   
+### 1.空指针和野指针 ###    
+**空指针**  
+空指针指的是不指向任何有效内存地址的指针，也就是不指向任何对象，那么它指向什么呢？   
+通常，空指针指向NULL或着0   
+>空指针不能解引用，但是可以取址
+```c++
+int *p = NULL;
+int *p = 0;
+int* p = nullptr;    //空指针
+*p = 42;    //空指针不可以解引用
+int** pp = &p    //空指针可以取地址
+```
+
+**野指针** 
+野指针指的是未知的，或者无效的内存地址   
+通常如果指针不进行初始化就使用，就会导致野指针的出现。   
+```c++
+int main() {
+    int *ptr;  // 未初始化的指针
+
+    *ptr = 42;  // 野指针的解引用
+
+    printf("野指针的值: %d\n", *ptr);
+
+    return 0;
+}
+```
+空指针和野指针都可能导致程序出现问题，所以在使用时，尽量避免出现上述情况。   
+
+**空指针和野指针的危害**     
+- 程序崩溃：当野指针被解引用时，访问无效的内存位置可能导致程序崩溃，并引发诸如段错误等的运行时错误。   
+- 内存泄漏：如果指针被设置为指向一块已释放的内存，这将导致内存泄漏。内存泄漏会消耗系统资源，并可能导致程序性能下降或崩溃。   
+- 无法预测的行为：对空指针或野指针进行解引用操作会导致不可预测的行为，因为访问的内存位置是未知的。
+
+### 2.const修饰指针 ###   
+**const修饰指针有三种情况**   
+
+1. const修饰指针   --- 常量指针
+2. const修饰常量   --- 指针常量
+3. const即修饰指针，又修饰常量
+
+
+
   
 
  
