@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="doc-open">images/images.png</file>
+        <file alias="Qt">images/Qt.webp</file>
+    </qresource>
+</RCC>
