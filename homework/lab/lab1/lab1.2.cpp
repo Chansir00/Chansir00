@@ -1,7 +1,7 @@
-// #include <cmath>
-// #include <iostream>
+#include <cmath>
+#include <iostream>
 
-// using namespace std;
+using namespace std;
 
 // // int main() {
 // //   const double pi = 3.14;
@@ -18,13 +18,13 @@
 // #include <iostream>
 // using namespace std;
 
-// int main() {
-//     double a, b, c, v, s;
-//     cout << "输入长宽高：";
-//     cin >> a >> b >> c;
-//     v = a * b * c;
-//     s = 2 * (a * b + b * c + a * c);
-//     cout << "v=" << v << endl;
-//     cout << "s=" << s;
-//     return 0;
-// }
+int main() {
+    double a, b, c, v, s;
+    cout << "输入长宽高：";
+    cin >> a >> b >> c;
+    v = a * b * c;
+    s = 2 * (a * b + b * c + a * c);
+    cout << "v=" << v << endl;
+    cout << "s=" << s;
+    return 0;
+}

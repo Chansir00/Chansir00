@@ -2,6 +2,8 @@
 #include<cstring>
 #include<stdio.h>
 using namespace std;
+
+
 void firstjudge();
 void strjudge();
 
@@ -48,7 +50,7 @@ void firstjudge()
 void strjudge()
 {
     string str;
-    getline(cin, str);
+    cin >> str;
     int flag = 1;
     int lenth = str.length();
     char* q = &str[0];

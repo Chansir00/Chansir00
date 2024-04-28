@@ -34,12 +34,12 @@ int main()
 // }
 
 
-// int jc(int i)
-// {
-//     int n = 1;
-//     for (int j = 1; j <= i; j++)
-//     {
-//         n *= j;
-//     }
-//     return n;
-// }
+int jc(int i)
+{
+    int n = 1;
+    for (int j = 1; j <= i; j++)
+    {
+        n *= j;
+    }
+    return n;
+}

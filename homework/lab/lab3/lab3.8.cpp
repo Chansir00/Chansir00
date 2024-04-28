@@ -10,7 +10,7 @@ int main()
     c = cin.get();
     // 创建数组记录数字出现的次数
     int arr[10] = { 0 };
-    while (c != EOF)
+    while (c != 'q')
     {
         nChar++;
         int n = 0;
@@ -52,7 +52,7 @@ int main()
     {
         cout << i << "出现了" << arr[i] << "次" << endl;
     }
-    
+
     system("pause");
     return 0;
 }
